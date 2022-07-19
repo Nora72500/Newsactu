@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use id;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategoryRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
