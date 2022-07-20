@@ -1,0 +1,31 @@
+{% block body %}
+
+<div class="row">
+    <div class="col-10 mx-auto mb-4>
+
+<div class="card">
+    <div class="card-header">
+    <h1 class="text-center card-title mb-5">{{ article.title }</h1>
+    <h4 class="text-center text-secondary mb-3">{{ article.subtitle }}</h4>
+    crée le : {{ article.createdAt | date('d/m/y')}} | Par : {{ article.title }}
+</div>
+<ul class="list-group list-group-flush">
+    <li class="List-group-item text-center text-muted">
+    
+                    </ul>
+                <img src="{{ asset('uploads/'  article.photo) }" class="img-custom" alt="{{ article.title }">
+                <div class="card-body">
+                    <p class="card-text my-4 col-8 mx-auto">{{ article.content | raw }}</p>
+                </div>
+            </div>
+
+     </div>
+    
+    
+    
+    
+    
+    
+  
+
+
