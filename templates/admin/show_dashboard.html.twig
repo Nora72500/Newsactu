@@ -56,4 +56,44 @@
         </div>
     </div>
 
+    <div class="col-6">
+    <thead>
+    <tr>
+        <td>{{ category.id }}</td>
+        <td>{{ category.name }}</td>
+        <td>{{ category.alias }}</td>
+        <td>{{ category.createdAt }}</td>
+        <td>{{ category.update }}</td>
+        <td>
+        {% if category deletedAt is null %}
+
+                               <a href="{{ path('update_category', {'id': category.id}) }}"
+                         class="text-info"
+                          title="Modifier la catégorie">
+                          <i class="fa fa-edit"></i></a>
+                        <a href="{{ path('soft_delete_category', {'id': category.id}) }}" 
+                        class="text-danger" 
+                        title="Archiver la catégorie">
+                        <i class="fa fa-restore"></i></a>
+                {% else %}  
+                    <td>   
+                        <a href="{{ path('restore_category', {'id': category.id}) }}"
+                         class="text-primary" 
+                         title"Restaurer la catégorie">
+                         <i class="fa fa-trash-arrow-up"></i></a>
+                        <a href="{{ path('hard_delete_category', {'id': category.id}) }}" 
+                        class="text-danger" title="Supprimer définitivement la catégorie"
+
+       
+        </td>
+    </tr>
+    </thead>
+          
+    </div>
+ {% else %}
+ <tr>
+ <td>
+ 
+ </td>
+ </tr>
 {% endblock %}

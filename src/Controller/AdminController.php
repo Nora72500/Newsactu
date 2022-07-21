@@ -7,13 +7,13 @@ use App\Form\ArticleFormType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Exception\AccessException;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
@@ -37,11 +37,12 @@ class AdminController extends AbstractController
      try{
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-     }  catch (AccessException $exception) {
+     }  catch (AccessDeniedException $exception) {
         $this->addFlash('warning','Cette partie du site est réservér aus admin');
         return $this->redirectToRoute('default_home');
      }  
         $articles = $entityManager->getRepository(Article::class)->findBy(['deletedAt' => null]);
+        $category = $entityManager->getRepository(Article::class)->findBy;
 
         return $this->render("admin/show_dashboard.html.twig", [
             'articles' => $articles,

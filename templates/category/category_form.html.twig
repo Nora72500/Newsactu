@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un article
+{% endblock %}
+
+
+{% block body %}
+{% include 'include/_flashes.html.twig' %}
+
+{% if category is not defined %}
+
+	<h1 class="text-center my-4">Ajouter une catégorie</h1>
+
+{% else %}
+
+	<h1 class="text-center my-4">Modifier la catégorie
+		{{ category.name }}</h1>
+
+{% endif %}
+
+
+	<div class="row">
+		<div class="col-4 mx-auto">
+    </div>
+    
+{% endblock %}
