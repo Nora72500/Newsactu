@@ -53,58 +53,60 @@ class AdminController extends AbstractController
      */
     public function createArticle(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-        # 1 - Instanciation
-        $article = new Article();
-
-        # 2 - Création du formulaire
-        $form = $this->createForm(ArticleFormType::class, $article)
-            ->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $article->setCreatedAt(new DateTime());
-            $article->setUpdateAt(new DateTime());
-
-            # L'alias sera utilisé dans l'url (comme FranceTvInfo) et donc doit être assaini de tout accents et espaces.
-            $article->setAlias($slugger->slug($article->getTitle()));
-
-            /** @var UploadedFile $photo */
-            $photo = $form->get('photo')->getData();
-
-            # Si une photo a été uploadée dans le formulaire on va faire le traitement nécessaire à son stockage dans notre projet.
-            if ($photo) {
-                # Déconstructioon
-                $extension = '.' . $photo->guessExtension();
-                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                //                $safeFilename = $article->getAlias();
-
-                # Reconstruction
-                $newFilename = $safeFilename . '_' . uniqid() . $extension;
-
-                try {
-                    $photo->move($this->getParameter('uploads_dir'), $newFilename);
-                    $article->setPhoto($newFilename);
-                } catch (FileException $exception) {
-                    # Code à exécuter en cas d'erreur.
-                }
-            } # end if($photo)
-
-            # Ajout d'un auteur à l'article (User récupéré depuis la session)
-            $article->setAuthor($this->getUser());
-
-            $entityManager->persist($article);
-            $entityManager->flush();
-
-            $this->addFlash('success', "L'article est en ligne avec succès !");
-            return $this->redirectToRoute('show_dashboard');
-        } # end if ($form)
-
-        # 3 - Création de la vue
-        return $this->render("admin/form/article.html.twig", [
-            'form' => $form->createView()
-        ]);
-    } # end function createArticle
+            # 1 - Instanciation
+            $article = new Article();
+    
+            # 2 - Création du formulaire
+            $form = $this->createForm(ArticleFormType::class, $article)
+                ->handleRequest($request);
+            
+            if($form->isSubmitted() && $form->isValid()) {
+    
+                $article->setCreatedAt(new DateTime());
+                $article->setUpdatedAt(new DateTime());
+                
+                # L'alias sera utilisé dans l'url (comme FranceTvInfo) et donc doit être assaini de tout accents et espaces.
+                $article->setAlias($slugger->slug($article->getTitle()));
+                
+                /** @var UploadedFile $photo */
+                $photo = $form->get('photo')->getData();
+                //dd($photo);
+                # Si une photo a été uploadée dans le formulaire on va faire le traitement nécessaire à son stockage dans notre projet.
+                if($photo) {
+                    # Déconstructioon
+                    $extension = '.' . $photo->guessExtension();
+                    $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+    //                $safeFilename = $article->getAlias();
+    
+                    # Reconstruction
+                    $newFilename = $safeFilename . '_' . uniqid() . $extension;
+    
+                    try {
+                        $photo->move($this->getParameter('uploads_dir'), $newFilename);
+                        $article->setPhoto($newFilename);
+                    }
+                    catch(FileException $exception) {
+                        # Code à exécuter en cas d'erreur.
+                    }
+                } # end if($photo)
+                   
+                    # Ajout d'un auteur à l'article (User récupéré depuis la session)
+                    $article->setAuthor($this->getUser());
+    
+                    $entityManager->persist($article);
+                    $entityManager->flush();
+    
+                    $this->addFlash('success', "L'article est en ligne avec succès !");
+                    return $this->redirectToRoute('show_dashboard');
+    
+            } # end if ($form)
+    
+            # 3 - Création de la vue
+            return $this->render("admin/form/article.html.twig", [
+                'form' => $form->createView()
+            ]);
+        } # end function createArticle
 
     /**
      * @Route("/modifier-un-article_{id}", name="update_article", methods={"GET|POST"})
@@ -122,7 +124,7 @@ class AdminController extends AbstractController
 
 
             $article->setCreatedAt(new DateTime());
-            $article->setUpdateAt(new DateTime());
+            $article->setUpdatedAt(new DateTime());
 
             # L'alias sera utilisé dans l'url (comme FranceTvInfo) et donc doit être assaini de tout accents et espaces.
             $article->setAlias($slugger->slug($article->getTitle()));

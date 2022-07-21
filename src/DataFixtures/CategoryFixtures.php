@@ -11,6 +11,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class CategoryFixtures extends Fixture
 {   
 
+    /**
+     * @var SluggerInterface
+     */
+    private $slugger;
 
         public function __construct(SluggerInterface $slugger)
         {
@@ -32,7 +36,7 @@ class CategoryFixtures extends Fixture
             'Musique',
             'Hi-tech',
             'Ecologie',
-            'Gaming'
+            'Gaming',
         ];
 
         foreach($categories as $cat){
