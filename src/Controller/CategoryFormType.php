@@ -1,20 +1,36 @@
 <?php
 
-namespace App\Controller;
+namespace App\Form;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Category;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CategoryFormTypeController extends AbstractController
+class CategoryFormType extends AbstractType
 {
-    /**
-     * @Route("/category/form/type", name="app_category_form_type")
-     */
-    public function index(): Response
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        return $this->render('category_form_type/index.html.twig', [
-            'controller_name' => 'CategoryFormTypeController',
+        $builder
+            ->add('name', TextType::class, [
+                'label' => 'Nom de la catégorie',
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Valider',
+                'validate' => false,
+                'attr' => [
+                    'class' => 'd-block mx-auto col-3 my-3 btn btn-success'
+                ],
+            ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Category::class,
         ]);
     }
 }
