@@ -38,6 +38,15 @@ class ArticleRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findByTrash(string $order = 'DESC')
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.deletedAt IS NOT NULL')
+            ->orderBy('a.createdAt', $order)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    /**
 //     * @return Article[] Returns an array of Article objects
